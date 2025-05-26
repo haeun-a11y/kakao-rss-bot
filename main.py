@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import feedparser
 from urllib.parse import unquote  # ✅ 필수!
+import os
 
 app = Flask(__name__)
 
@@ -77,4 +78,5 @@ def get_latest_news_card(category, feed_url):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))  # Render가 주는 포트 사용
+    app.run(host="0.0.0.0", port=port)
