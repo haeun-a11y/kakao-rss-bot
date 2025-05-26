@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from urllib.parse import unquote  # ← 추가
 import feedparser
+from urllib.parse import unquote  # ✅ 필수!
 
 app = Flask(__name__)
 
@@ -18,15 +18,8 @@ rss_feeds = {
 
 @app.route("/rss/<category>", methods=["GET", "POST"])
 def rss_by_category(category):
-    category = unquote(category)  # ← URL 한글 경로 디코딩
-
-    # 요청 JSON 로그 찍기
-    try:
-        data = request.get_json()
-        print("📥 받은 요청 데이터:", data)
-    except:
-        print("❗ JSON 파싱 실패")
-
+    from urllib.parse import unquote
+    category = unquote(category)
     print(f"💬 요청받음: {category}")
 
     if category not in rss_feeds:
@@ -41,14 +34,11 @@ def rss_by_category(category):
             }
         })
 
-    feed_url = rss_feeds[category]
-    return get_latest_news_card(category, feed_url)
+    return get_latest_news_card(category, rss_feeds[category])
 
 
-# 🗞️ 뉴스 카드 응답 생성
 def get_latest_news_card(category, feed_url):
     feed = feedparser.parse(feed_url)
-
     if not feed.entries:
         return jsonify({
             "version": "2.0",
@@ -86,6 +76,5 @@ def get_latest_news_card(category, feed_url):
     })
 
 
-# 🏁 서버 실행
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host="0.0.0.0", port=5000)
