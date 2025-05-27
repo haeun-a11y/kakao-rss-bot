@@ -11,7 +11,6 @@ rss_feeds = {
     "정치": "https://www.inews24.com/rss/news_politics.xml",
     "사회": "https://www.inews24.com/rss/news_society.xml",
     "문화": "https://www.inews24.com/rss/news_culture.xml",
-    "생활": "https://www.inews24.com/rss/news_life.xml",
     "연예": "https://www.inews24.com/rss/news_enter.xml",
     "스포츠": "https://www.inews24.com/rss/news_sports.xml"
 }
@@ -70,7 +69,14 @@ def get_latest_news_card(category, feed_url):
                     "header": {
                         "title": f"{category} 분야 최신 뉴스"
                     },
-                    "items": items
+                    "items":
+                    items,
+                    "buttons": [{
+                        "label": "다른 분야 뉴스 보기",
+                        "action": "block",
+                        "blockId":
+                        "68345c25c5b310190b6dfa9f"  # ← 이 부분만 바꾸면 돼요!
+                    }]
                 }
             }]
         }
